@@ -1,7 +1,6 @@
 
 const avatarList = [
     "https://i.redd.it/1veptyerf2n31.png",
-    "https://d.furaffinity.net/art/es0terica/1670553893/1670553893.es0terica_dinkpotato.png",
     "https://preview.redd.it/pk4st0utokb91.png?width=640&crop=smart&auto=webp&s=915248187b999ad7ea42496a1185f76c55fabc69",
     "https://f2.toyhou.se/file/f2-toyhou-se/images/68364193_rl0tZIbccVyd962.png",
     "https://images.squarespace-cdn.com/content/v1/5f8924df019a030762d47313/a1e5f224-dd47-438a-8881-393fad69c670/D%27hani+-+flyingsciurus.png",
@@ -65,7 +64,7 @@ function addPlayer(name = '', level = 0, avatar = "") {
 // Toggle the avatar selection list visibility inside the player card
 function toggleAvatarList(button) {
     // Find the corresponding player card where the avatar list will be shown
-    const playerCard = button.closest('.player-card');  // This ensures we're targeting the correct card
+    const playerCard = button.closest('.player-card'); // Ensure we're targeting the correct card
     let avatarListContainer = playerCard.querySelector('.avatar-list-container');
 
     // If the avatar list doesn't exist, create it
@@ -74,7 +73,8 @@ function toggleAvatarList(button) {
         avatarListContainer.className = 'avatar-list-container';
         avatarListContainer.style.display = 'none'; // Hidden by default
         avatarListContainer.innerHTML = avatarList.map((avatarUrl) => `
-            <img src="${avatarUrl}" class="avatar-thumbnail" onclick="selectAvatar('${avatarUrl}', '${playerCard}')">
+            <img src="${avatarUrl}" class="avatar-thumbnail" 
+                onclick="selectAvatar('${avatarUrl}', this.closest('.player-card'))">
         `).join('');
         playerCard.appendChild(avatarListContainer);
     }
@@ -83,8 +83,8 @@ function toggleAvatarList(button) {
     avatarListContainer.style.display = avatarListContainer.style.display === 'none' ? 'block' : 'none';
 }
 
-// Select an avatar for the player
 function selectAvatar(avatarUrl, playerCard) {
+    // Update the avatar image for the correct player card
     const playerImage = playerCard.querySelector('.player-image');
     playerImage.src = avatarUrl;
 
@@ -95,20 +95,7 @@ function selectAvatar(avatarUrl, playerCard) {
     // Save the selected avatar to localStorage
     saveToLocalStorage();
 }
-// Select an avatar for the player
-function selectAvatar(avatarUrl) {
-    // Find the player card where the avatar needs to be updated
-    const playerCard = document.querySelector('.player-card:last-child'); // Assuming the last player card is the one being edited
-    const playerImage = playerCard.querySelector('.player-image');
-    playerImage.src = avatarUrl;
 
-    // Close the avatar selection list
-    const avatarListContainer = playerCard.querySelector('.avatar-list-container');
-    avatarListContainer.style.display = 'none';
-
-    // Save the selected avatar to localStorage
-    saveToLocalStorage();
-}
 function deletePlayer(button) {
     const playerCard = button.parentElement; // Get the parent card element
     playerCard.remove(); // Remove the card from the DOM
